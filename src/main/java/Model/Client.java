@@ -9,10 +9,9 @@ public class Client {
     private String patronymic;
 
     /**
-     *
      * @param id
-     * @param name - Имя клиента
-     * @param surname - Фамилия клиента
+     * @param name       - Имя клиента
+     * @param surname    - Фамилия клиента
      * @param patronymic - Отчество клиента
      */
     public Client(int id, String name, String surname, String patronymic) {

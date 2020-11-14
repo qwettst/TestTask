@@ -48,8 +48,8 @@ public class CsvHelperDeposit {
                 String startDate = record.get("StartDate");
                 boolean withPercentCapitalization = Boolean.parseBoolean(record.get("withPercentCapitalization"));
                 int idClient = Integer.parseInt(record.get("IDclient"));
-                Date depositDate=depositMapper.setStartDateFromCsv(startDate);
-                Deposit deposit = new Deposit(id, ammount, percent, pretermPercent, termDays,depositDate, withPercentCapitalization, idClient);
+                Date depositDate = depositMapper.setStartDateFromCsv(startDate);
+                Deposit deposit = new Deposit(id, ammount, percent, pretermPercent, termDays, depositDate, withPercentCapitalization, idClient);
                 listDeposits.add(deposit);
             }
         } catch (Exception e) {

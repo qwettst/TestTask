@@ -24,6 +24,7 @@ public class CsvHelperAccount {
 
     /**
      * Методя получения всех записей из csv файла
+     *
      * @return String лист записей имен аккаунтов
      */
     public List<String> getAllRecord() {
@@ -41,6 +42,7 @@ public class CsvHelperAccount {
 
     /**
      * Метод добавления записи об аккаунте в csv файл
+     *
      * @param userName
      * @param password
      */
@@ -65,6 +67,7 @@ public class CsvHelperAccount {
 
     /**
      * Метод удаления записи по userName и password аккаунта
+     *
      * @param userName
      * @param password
      */
@@ -91,23 +94,24 @@ public class CsvHelperAccount {
 
     /**
      * Метод валидации пользователя в системе для последующей авторизации
+     *
      * @param userName
      * @param password
      * @return true - данные пользоввателя действительны
-     *              false - данные пользоввателя не действительны
+     * false - данные пользоввателя не действительны
      */
-    public boolean validateAccount(String userName, String password){
-        boolean res=false;
+    public boolean validateAccount(String userName, String password) {
+        boolean res = false;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("./" + CSV_NAME))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
             for (CSVRecord record : records) {
-                if(record.get("UserName").equals(userName) & record.get("Password").equals(password)){
-                    res=true;
+                if (record.get("UserName").equals(userName) & record.get("Password").equals(password)) {
+                    res = true;
                     break;
                 }
             }
         } catch (Exception e) {
-            res=false;
+            res = false;
             e.printStackTrace();
         }
         return res;

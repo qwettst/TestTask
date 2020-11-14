@@ -32,7 +32,7 @@ public class AuthToken {
                 }
             };
             Timer timer = new Timer("Timer");
-            timer.schedule(task, 60000*30);
+            timer.schedule(task, 60000 * 30);
         }
         return token;
     }

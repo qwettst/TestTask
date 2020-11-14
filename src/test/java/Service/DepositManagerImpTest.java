@@ -1,5 +1,6 @@
 package Service;
 
+import Exceptions.AuthException;
 import Model.Client;
 import Model.Deposit;
 import org.junit.Test;
@@ -8,38 +9,41 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class DepositManagerImpTest {
+    private static Logger log = Logger.getLogger(DepositManagerImpTest.class.getName());
+
     @Test
     public void testDeposit() {
-        long time = System.currentTimeMillis();
 
-        DepositMapper depositMapper=new DepositMapper();
+        DepositMapper depositMapper = new DepositMapper();
         CsvHelperDeposit csvHelperDeposit = new CsvHelperDeposit(depositMapper);
         DepositManagerImp depositManagerImp = new DepositManagerImp(csvHelperDeposit);
+
         Date date = new GregorianCalendar(2018, Calendar.DECEMBER, 14).getTime();
 
-        Deposit deposit = new Deposit(100000, 5, 5, 36, date, true, 1);
+        Deposit deposit = new Deposit(100000.0231, 5, 5, 36, date, true, 1);
 
         String username = "da";
-        String password = "135";
+        String password = "133";
         CsvHelperAccount csvHelperAccount = new CsvHelperAccount();
         AccountManagerImp accountManagerImp = new AccountManagerImp(csvHelperAccount);
-        accountManagerImp.addAccount(username,password);
-        String token = accountManagerImp.authorize(username, password, new Date());
+        accountManagerImp.addAccount(username, password);
+        String token = null;
 
         Client client = new Client(2, "Ja", "Ne", "Ponyal");
 
-        depositManagerImp.addDeposit(client, 100000, 20, 6, 90, date, true, token);
-
+        try {
+            token = accountManagerImp.authorize(username, password, new Date());
+            depositManagerImp.addDeposit(client, 100000, 20, 6, 35, date, true, token);
+        } catch (Exception e) {
+            log.info("Error: " + e.getMessage());
+        }
 
         depositManagerImp.getAllDeposits();
         List<Deposit> depositList = depositManagerImp.getClientDeposits(new Client(1, "dsad", "da", "dsada"), token);
-
-
         System.out.println(depositManagerImp.getEarnings(deposit, new Date(), token));
-        long t1 = System.currentTimeMillis() - time;
-        System.out.println(" read file " + (t1) + " ms");
     }
 
     @Test
@@ -54,7 +58,11 @@ public class DepositManagerImpTest {
         accountManagerImp.addAccount(username, password);
         accountManagerImp.getAllAccounts();
         accountManagerImp.removeAccount("dsadas", "135");
-        String token = accountManagerImp.authorize(username, password, new Date());
+        try {
+            String token = accountManagerImp.authorize(username, password, new Date());
+        } catch (AuthException e) {
+            log.info("Error: " + e.getMessage());
+        }
 
     }
 

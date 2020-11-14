@@ -1,5 +1,6 @@
 package Service;
 
+import Exceptions.NumberOfTermDaysException;
 import Model.Client;
 import Model.Deposit;
 
@@ -16,7 +17,7 @@ public interface DepositManager {
     */
     Deposit addDeposit(Client client, double ammount, double percent, double pretermPercent,
                        int termDays, Date startDate,
-                       boolean withPercentCapitalization, String token);
+                       boolean withPercentCapitalization, String token) throws NumberOfTermDaysException;
 
     /*
     Метод возвращает список вкладов клиента

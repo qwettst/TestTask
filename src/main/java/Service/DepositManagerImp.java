@@ -1,5 +1,6 @@
 package Service;
 
+import Exceptions.NumberOfTermDaysException;
 import Model.Client;
 import Model.Deposit;
 import org.apache.commons.lang3.time.DateUtils;
@@ -18,7 +19,6 @@ public class DepositManagerImp implements DepositManager {
     private CsvHelperDeposit csvHelperDeposit;
 
     /**
-     *
      * @param csvHelperDeposit instance сервиса для работы с csv
      */
     public DepositManagerImp(CsvHelperDeposit csvHelperDeposit) {
@@ -27,8 +27,10 @@ public class DepositManagerImp implements DepositManager {
 
     @Override
     public Deposit addDeposit(Client client, double ammount, double percent, double pretermPercent,
-                              int termDays, Date startDate, boolean withPercentCapitalization, String token) {
+                              int termDays, Date startDate, boolean withPercentCapitalization, String token) throws NumberOfTermDaysException {
         if (AuthToken.validateToken(token)) {
+            if (termDays < 30)
+                throw new NumberOfTermDaysException("The number of days should not be less than 30");
             Deposit deposit;
             deposit = csvHelperDeposit.addValue(new Deposit(ammount, percent, pretermPercent, termDays, startDate, withPercentCapitalization, client.getId()));
             return deposit;
@@ -53,7 +55,7 @@ public class DepositManagerImp implements DepositManager {
 
     @Override
     public double getEarnings(Deposit deposit, Date currentDate, String token) {
-        if (AuthToken.validateToken(token)){
+        if (AuthToken.validateToken(token)) {
             double res = 0;
             Date depositDate = deposit.getStartDate();
             depositDate = DateUtils.addDays(depositDate, deposit.getTermDays());
@@ -71,7 +73,7 @@ public class DepositManagerImp implements DepositManager {
 
     @Override
     public double removeDeposit(Deposit deposit, Date closeDate, String token) {
-        if (AuthToken.validateToken(token)){
+        if (AuthToken.validateToken(token)) {
             double res = 0;
             Date depositDate = deposit.getStartDate();
             depositDate = DateUtils.addDays(depositDate, deposit.getTermDays());
@@ -91,11 +93,10 @@ public class DepositManagerImp implements DepositManager {
     }
 
     /**
-     *
      * @param deposit
      * @param currentDate
      * @param termPayout, true - расчет для досрочных выплат,
-     *                   false - расчет при выплате в срок
+     *                    false - расчет при выплате в срок
      */
     private double calcDeposit(Deposit deposit, Date currentDate, boolean termPayout) {
         double res = 0;

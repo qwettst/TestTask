@@ -1,5 +1,7 @@
 package Model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 
@@ -14,9 +16,10 @@ public class Deposit {
     private Date startDate;
     private boolean withPercentCapitalization;
 
-
     public Deposit(double ammount, double percent, double pretermPercent, int termDays, Date startDate, boolean withPercentCapitalization, int idClient) {
-        this.ammount = ammount;
+        this.ammount = BigDecimal.valueOf(ammount)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
         this.percent = percent;
         this.pretermPercent = pretermPercent;
         this.termDays = termDays;
@@ -31,7 +34,7 @@ public class Deposit {
         this.percent = percent;
         this.pretermPercent = pretermPercent;
         this.termDays = termDays;
-        this.startDate=startDate;
+        this.startDate = startDate;
         this.withPercentCapitalization = withPercentCapitalization;
         this.idClient = idClient;
     }

@@ -1,5 +1,7 @@
 package Service;
 
+import Exceptions.AuthException;
+
 import java.util.Date;
 import java.util.List;
 
@@ -26,5 +28,5 @@ public interface AccountManager {
     /*
     Метод авторизирует пользователя и возвращает Token для доступа методам системы
     */
-    String authorize(String userName, String password, Date currentTime);
+    String authorize(String userName, String password, Date currentTime) throws AuthException;
 }
