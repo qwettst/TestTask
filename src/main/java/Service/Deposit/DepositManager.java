@@ -1,4 +1,4 @@
-package Service;
+package Service.Deposit;
 
 import Exceptions.NumberOfTermDaysException;
 import Model.Client;

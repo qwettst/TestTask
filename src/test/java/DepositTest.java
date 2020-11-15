@@ -35,9 +35,9 @@ public class DepositTest {
         Assert.assertNotNull(deposit);
         Assert.assertEquals(id, deposit.getId());
         Assert.assertEquals(idClient, deposit.getIdClient());
-        Assert.assertEquals(ammount, deposit.getAmmount(), 0.00001);
-        Assert.assertEquals(percent, deposit.getPercent(), 0.00001);
-        Assert.assertEquals(pretermPercent, deposit.getPretermPercent(), 0.00001);
+        Assert.assertEquals(ammount, deposit.getAmmount(), 0.1);
+        Assert.assertEquals(percent, deposit.getPercent(), 0.1);
+        Assert.assertEquals(pretermPercent, deposit.getPretermPercent(), 0.1);
         Assert.assertEquals(termDays, deposit.getTermDays());
         Assert.assertEquals(startDate, deposit.getStartDate());
         Assert.assertEquals(true, deposit.isWithPercentCapitalization());
@@ -51,9 +51,9 @@ public class DepositTest {
         Assert.assertNotNull(deposit);
         Assert.assertEquals(0, deposit.getId());
         Assert.assertEquals(idClient, deposit.getIdClient());
-        Assert.assertEquals(ammount, deposit.getAmmount(), 0.00001);
-        Assert.assertEquals(percent, deposit.getPercent(), 0.00001);
-        Assert.assertEquals(pretermPercent, deposit.getPretermPercent(), 0.00001);
+        Assert.assertEquals(ammount, deposit.getAmmount(), 0.1);
+        Assert.assertEquals(percent, deposit.getPercent(), 0.1);
+        Assert.assertEquals(pretermPercent, deposit.getPretermPercent(), 0.1);
         Assert.assertEquals(termDays, deposit.getTermDays());
         Assert.assertEquals(startDate, deposit.getStartDate());
         Assert.assertEquals(true, deposit.isWithPercentCapitalization());

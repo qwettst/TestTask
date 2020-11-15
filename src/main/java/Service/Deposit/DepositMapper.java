@@ -1,4 +1,4 @@
-package Service;
+package Service.Deposit;
 
 
 import Model.Deposit;
@@ -29,7 +29,7 @@ public class DepositMapper {
                 .append(deposit.isWithPercentCapitalization()).append(CSV_SEPARATOR)
                 .append(deposit.getIdClient())
                 .toString();
-        return new ArrayList<>(Arrays.asList(s.split(",")));
+        return Arrays.asList(s.split(","));
     }
 
     public Date setStartDateFromCsv(String startDate) {

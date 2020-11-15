@@ -1,4 +1,4 @@
-package Service;
+package Service.Deposit;
 
 import Model.Deposit;
 import org.apache.commons.csv.CSVFormat;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Класс для хранения и обработки записей  депозитов
  */
-public class CsvHelperDeposit {
+public class CsvDepositStorage implements DepositStorage {
 
     private static final String CSV_NAME = "depositDB.csv";
     private static final String[] HEADERS = {"ID", "Ammount", "Percent", "PretermPercent",
@@ -31,11 +31,12 @@ public class CsvHelperDeposit {
      *
      * @return Лист депозитов
      */
-    public CsvHelperDeposit(DepositMapper depositMapper) {
+    public CsvDepositStorage(DepositMapper depositMapper) {
         this.depositMapper = depositMapper;
     }
 
-    public List<Deposit> getAllRecord() {
+    @Override
+    public List<Deposit> getAll() {
         List<Deposit> listDeposits = new ArrayList<>();
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("./" + CSV_NAME))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -64,7 +65,8 @@ public class CsvHelperDeposit {
      * @param deposit
      * @return Deposit
      */
-    public Deposit addValue(Deposit deposit) {
+    @Override
+    public Deposit add(Deposit deposit) {
         int incr = getIncrement();
         CSVFormat csvFileFormat = CSVFormat.DEFAULT;
         if (incr == 0) {
@@ -91,8 +93,9 @@ public class CsvHelperDeposit {
      * @param idClient - id клиента
      * @return
      */
-    public List<Deposit> getValueByClient(int idClient) {
-        List<Deposit> listAllDeposits = getAllRecord();
+    @Override
+    public List<Deposit> getDepositsByClient(int idClient) {
+        List<Deposit> listAllDeposits = getAll();
         List<Deposit> listDeposits = new ArrayList<>();
         for (Deposit deposit : listAllDeposits) {
             if (deposit.getIdClient() == idClient) {
@@ -107,7 +110,8 @@ public class CsvHelperDeposit {
      *
      * @param idDeposit - id депозита
      */
-    public void removeValue(int idDeposit) {
+    @Override
+    public void remove(int idDeposit) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(HEADERS);
         try (BufferedWriter writer = Files.newBufferedWriter(
                 Paths.get("./" + "withoutElem.csv"),

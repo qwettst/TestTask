@@ -1,8 +1,9 @@
-package Service;
+package Service.Deposit;
 
 import Exceptions.NumberOfTermDaysException;
 import Model.Client;
 import Model.Deposit;
+import Service.Account.AuthToken;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
@@ -16,13 +17,13 @@ import java.util.List;
 
 public class DepositManagerImp implements DepositManager {
 
-    private CsvHelperDeposit csvHelperDeposit;
+    private DepositStorage depositStorage;
 
     /**
-     * @param csvHelperDeposit instance сервиса для работы с csv
+     * @param depositStorage instance сервиса для работы с csv
      */
-    public DepositManagerImp(CsvHelperDeposit csvHelperDeposit) {
-        this.csvHelperDeposit = csvHelperDeposit;
+    public DepositManagerImp(DepositStorage depositStorage) {
+        this.depositStorage = depositStorage;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class DepositManagerImp implements DepositManager {
             if (termDays < 30)
                 throw new NumberOfTermDaysException("The number of days should not be less than 30");
             Deposit deposit;
-            deposit = csvHelperDeposit.addValue(new Deposit(ammount, percent, pretermPercent, termDays, startDate, withPercentCapitalization, client.getId()));
+            deposit = depositStorage.add(new Deposit(ammount, percent, pretermPercent, termDays, startDate, withPercentCapitalization, client.getId()));
             return deposit;
         }
         return null;
@@ -41,7 +42,7 @@ public class DepositManagerImp implements DepositManager {
     @Override
     public List<Deposit> getClientDeposits(Client client, String token) {
         if (AuthToken.validateToken(token)) {
-            List<Deposit> depositList = csvHelperDeposit.getValueByClient(client.getId());
+            List<Deposit> depositList = depositStorage.getDepositsByClient(client.getId());
             return depositList;
         }
         return null;
@@ -49,7 +50,7 @@ public class DepositManagerImp implements DepositManager {
 
     @Override
     public List<Deposit> getAllDeposits() {
-        List<Deposit> depositList = csvHelperDeposit.getAllRecord();
+        List<Deposit> depositList = depositStorage.getAll();
         return depositList;
     }
 
@@ -86,7 +87,7 @@ public class DepositManagerImp implements DepositManager {
             }
             BigDecimal bd = new BigDecimal(Double.toString(res + deposit.getAmmount()));
             bd = bd.setScale(2, RoundingMode.HALF_UP);
-            csvHelperDeposit.removeValue(deposit.getId());
+            depositStorage.remove(deposit.getId());
             return bd.doubleValue();
         }
         return 0;

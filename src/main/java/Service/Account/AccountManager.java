@@ -1,4 +1,4 @@
-package Service;
+package Service.Account;
 
 import Exceptions.AuthException;
 

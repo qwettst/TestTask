@@ -1,4 +1,4 @@
-package Service;
+package Service.Account;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -14,20 +14,12 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Класс для хранения и обработки записей аккаунтов пользователей
- */
-
-public class CsvHelperAccount {
+public class CsvAccountStorage implements AccountStorage {
     private static final String CSV_NAME = "accountDB.csv";
     private static final String[] HEADERS = {"UserName", "Password"};
 
-    /**
-     * Методя получения всех записей из csv файла
-     *
-     * @return String лист записей имен аккаунтов
-     */
-    public List<String> getAllRecord() {
+    @Override
+    public List<String> getAll() {
         List<String> stringList = new ArrayList<>();
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("./" + CSV_NAME))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -40,13 +32,8 @@ public class CsvHelperAccount {
         return stringList;
     }
 
-    /**
-     * Метод добавления записи об аккаунте в csv файл
-     *
-     * @param userName
-     * @param password
-     */
-    public void addValue(String userName, String password) {
+    @Override
+    public void add(String userName, String password) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT;
         try (BufferedWriter writer = Files.newBufferedWriter(
                 Paths.get("./" + CSV_NAME),
@@ -64,14 +51,8 @@ public class CsvHelperAccount {
         }
     }
 
-
-    /**
-     * Метод удаления записи по userName и password аккаунта
-     *
-     * @param userName
-     * @param password
-     */
-    public void removeValue(String userName, String password) {
+    @Override
+    public void remove(String userName, String password) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(HEADERS);
         try (BufferedWriter writer = Files.newBufferedWriter(
                 Paths.get("./" + "withoutElemAcc.csv"),
@@ -92,15 +73,8 @@ public class CsvHelperAccount {
         }
     }
 
-    /**
-     * Метод валидации пользователя в системе для последующей авторизации
-     *
-     * @param userName
-     * @param password
-     * @return true - данные пользоввателя действительны
-     * false - данные пользоввателя не действительны
-     */
-    public boolean validateAccount(String userName, String password) {
+    @Override
+    public boolean validate(String userName, String password) {
         boolean res = false;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("./" + CSV_NAME))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -116,5 +90,4 @@ public class CsvHelperAccount {
         }
         return res;
     }
-
 }

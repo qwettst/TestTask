@@ -3,6 +3,11 @@ package Service;
 import Exceptions.AuthException;
 import Model.Client;
 import Model.Deposit;
+import Service.Account.AccountManagerImp;
+import Service.Account.CsvAccountStorage;
+import Service.Deposit.CsvDepositStorage;
+import Service.Deposit.DepositManagerImp;
+import Service.Deposit.DepositMapper;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -18,8 +23,8 @@ public class DepositManagerImpTest {
     public void testDeposit() {
 
         DepositMapper depositMapper = new DepositMapper();
-        CsvHelperDeposit csvHelperDeposit = new CsvHelperDeposit(depositMapper);
-        DepositManagerImp depositManagerImp = new DepositManagerImp(csvHelperDeposit);
+        CsvDepositStorage csvDepositStorage = new CsvDepositStorage(depositMapper);
+        DepositManagerImp depositManagerImp = new DepositManagerImp(csvDepositStorage);
 
         Date date = new GregorianCalendar(2018, Calendar.DECEMBER, 14).getTime();
 
@@ -27,8 +32,8 @@ public class DepositManagerImpTest {
 
         String username = "da";
         String password = "133";
-        CsvHelperAccount csvHelperAccount = new CsvHelperAccount();
-        AccountManagerImp accountManagerImp = new AccountManagerImp(csvHelperAccount);
+        CsvAccountStorage csvAccountStorage = new CsvAccountStorage();
+        AccountManagerImp accountManagerImp = new AccountManagerImp(csvAccountStorage);
         accountManagerImp.addAccount(username, password);
         String token = null;
 
@@ -48,12 +53,11 @@ public class DepositManagerImpTest {
 
     @Test
     public void testAccount() {
-        CsvHelperAccount csvHelperAccount = new CsvHelperAccount();
-        AccountManagerImp accountManagerImp = new AccountManagerImp(csvHelperAccount);
+        CsvAccountStorage csvAccountStorage = new CsvAccountStorage();
+        AccountManagerImp accountManagerImp = new AccountManagerImp(csvAccountStorage);
 
         String username = "dada";
         String password = "dsadasf2";
-        Date date = new Date();
 
         accountManagerImp.addAccount(username, password);
         accountManagerImp.getAllAccounts();
