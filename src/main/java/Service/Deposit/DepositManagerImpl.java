@@ -15,14 +15,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class DepositManagerImp implements DepositManager {
+public class DepositManagerImpl implements DepositManager {
 
     private DepositStorage depositStorage;
 
     /**
      * @param depositStorage instance сервиса для работы с csv
      */
-    public DepositManagerImp(DepositStorage depositStorage) {
+    public DepositManagerImpl(DepositStorage depositStorage) {
         this.depositStorage = depositStorage;
     }
 

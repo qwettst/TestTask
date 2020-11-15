@@ -3,10 +3,10 @@ package Service;
 import Exceptions.AuthException;
 import Model.Client;
 import Model.Deposit;
-import Service.Account.AccountManagerImp;
+import Service.Account.AccountManagerImpl;
 import Service.Account.CsvAccountStorage;
 import Service.Deposit.CsvDepositStorage;
-import Service.Deposit.DepositManagerImp;
+import Service.Deposit.DepositManagerImpl;
 import Service.Deposit.DepositMapper;
 import org.junit.Test;
 
@@ -16,15 +16,15 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class DepositManagerImpTest {
-    private static Logger log = Logger.getLogger(DepositManagerImpTest.class.getName());
+public class DepositManagerImplTest {
+    private static Logger log = Logger.getLogger(DepositManagerImplTest.class.getName());
 
     @Test
     public void testDeposit() {
 
         DepositMapper depositMapper = new DepositMapper();
         CsvDepositStorage csvDepositStorage = new CsvDepositStorage(depositMapper);
-        DepositManagerImp depositManagerImp = new DepositManagerImp(csvDepositStorage);
+        DepositManagerImpl depositManagerImpl = new DepositManagerImpl(csvDepositStorage);
 
         Date date = new GregorianCalendar(2018, Calendar.DECEMBER, 14).getTime();
 
@@ -33,37 +33,37 @@ public class DepositManagerImpTest {
         String username = "da";
         String password = "133";
         CsvAccountStorage csvAccountStorage = new CsvAccountStorage();
-        AccountManagerImp accountManagerImp = new AccountManagerImp(csvAccountStorage);
-        accountManagerImp.addAccount(username, password);
+        AccountManagerImpl accountManagerImpl = new AccountManagerImpl(csvAccountStorage);
+        accountManagerImpl.addAccount(username, password);
         String token = null;
 
         Client client = new Client(2, "Ja", "Ne", "Ponyal");
 
         try {
-            token = accountManagerImp.authorize(username, password, new Date());
-            depositManagerImp.addDeposit(client, 100000, 20, 6, 35, date, true, token);
+            token = accountManagerImpl.authorize(username, password, new Date());
+            depositManagerImpl.addDeposit(client, 100000, 20, 6, 35, date, true, token);
         } catch (Exception e) {
             log.info("Error: " + e.getMessage());
         }
 
-        depositManagerImp.getAllDeposits();
-        List<Deposit> depositList = depositManagerImp.getClientDeposits(new Client(1, "dsad", "da", "dsada"), token);
-        System.out.println(depositManagerImp.getEarnings(deposit, new Date(), token));
+        depositManagerImpl.getAllDeposits();
+        List<Deposit> depositList = depositManagerImpl.getClientDeposits(new Client(1, "dsad", "da", "dsada"), token);
+        System.out.println(depositManagerImpl.getEarnings(deposit, new Date(), token));
     }
 
     @Test
     public void testAccount() {
         CsvAccountStorage csvAccountStorage = new CsvAccountStorage();
-        AccountManagerImp accountManagerImp = new AccountManagerImp(csvAccountStorage);
+        AccountManagerImpl accountManagerImpl = new AccountManagerImpl(csvAccountStorage);
 
         String username = "dada";
         String password = "dsadasf2";
 
-        accountManagerImp.addAccount(username, password);
-        accountManagerImp.getAllAccounts();
-        accountManagerImp.removeAccount("dsadas", "135");
+        accountManagerImpl.addAccount(username, password);
+        accountManagerImpl.getAllAccounts();
+        accountManagerImpl.removeAccount("dsadas", "135");
         try {
-            String token = accountManagerImp.authorize(username, password, new Date());
+            String token = accountManagerImpl.authorize(username, password, new Date());
         } catch (AuthException e) {
             log.info("Error: " + e.getMessage());
         }

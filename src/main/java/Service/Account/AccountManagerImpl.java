@@ -6,10 +6,10 @@ import Exceptions.AuthException;
 import java.util.Date;
 import java.util.List;
 
-public class AccountManagerImp implements AccountManager {
+public class AccountManagerImpl implements AccountManager {
     private AccountStorage accountStorage;
 
-    public AccountManagerImp(AccountStorage accountStorage) {
+    public AccountManagerImpl(AccountStorage accountStorage) {
         this.accountStorage = accountStorage;
     }
 
